@@ -107,7 +107,7 @@ export default {
   },
   mounted() {
     // check if localstorage persist, if not route to '/'
-    if (!this.isLocalStorage()) {
+    if (!localStorage.username || localStorage.username === "") {
       this.$router.push("/login");
       return;
     }
@@ -134,15 +134,7 @@ export default {
       this.$store.commit("set_jwt", token);
       axios.defaults.headers.common["Authorization"] = "Bearer " + token;
     },
-    isLocalStorage() {
-      let storage;
-      try {
-        storage = JSON.parse(localStorage.budget_tracker);
-      } catch (err) {
-        return false;
-      }
-      return true;
-    },
+
     async updateItems() {
       // refreshes JWT every update
       let jwtResponse = await this.refreshJWT();

@@ -37,7 +37,6 @@ export default new Vuex.Store({
     clear_state: (state) => {
       state.jwt = '';
       state.username = '';
-      state.hostIp = '';
       state.refresh_jwt = '';
     }
   },

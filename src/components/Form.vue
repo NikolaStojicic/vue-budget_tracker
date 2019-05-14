@@ -35,7 +35,7 @@
           <v-card-actions>
             <v-spacer></v-spacer>
             <v-btn color="error" flat @click="$emit('update:dialog', false);">Close</v-btn>
-            <v-btn color="success" flat @click="saveItem">Save</v-btn>
+            <v-btn color="success" flat :disabled="!saveBtn" @click="saveItem">Save</v-btn>
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -69,12 +69,14 @@ export default {
       });
     },
     clearItems() {
+      this.upload_img = "";
       this.ticket.name = "";
-      this.ticket.price = 0.0;
+      this.ticket.price = "";
       this.ticket.description = "";
       this.ticket.image = "";
+      this.saveBtn = true;
     },
-    saveItem() {
+    saveItem(event) {
       let url = this.buildReqURL("ticket");
       let postObj = {
         name: this.ticket.name,
@@ -97,6 +99,7 @@ export default {
         .catch(err => {
           console.log(err.response);
         });
+      this.saveBtn = false;
     }
   },
   props: {
@@ -111,6 +114,7 @@ export default {
   },
   data() {
     return {
+      saveBtn: true,
       upload_img: "",
       ticket: {
         name: "",
