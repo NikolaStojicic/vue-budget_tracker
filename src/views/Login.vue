@@ -43,7 +43,7 @@ export default {
   },
   methods: {
     buildReqURL(route) {
-      return `http://${this.$store.getters.getHostIp}/${route}`;
+      return `${this.$store.getters.getHostIp}/${route}`;
     },
     connect() {
       this.$store.commit("set_host_ip", this.hostIp);

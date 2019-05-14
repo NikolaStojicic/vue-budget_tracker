@@ -119,7 +119,7 @@ export default {
       this.ticketToEdit = id;
     },
     buildReqURL(route) {
-      return `http://${this.$store.getters.getHostIp}/${route}`;
+      return `${this.$store.getters.getHostIp}/${route}`;
     },
     refreshJWT() {
       let getUrl = this.buildReqURL("refreshjwt");

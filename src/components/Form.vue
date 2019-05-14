@@ -50,7 +50,7 @@ export default {
   },
   methods: {
     buildReqURL(route) {
-      return `http://${this.$store.getters.getHostIp}/${route}`;
+      return `${this.$store.getters.getHostIp}/${route}`;
     },
     onFileSelected(event) {
       let formData = new FormData();
