@@ -24,7 +24,7 @@
             <span class="red--text">{{errorMessage}}</span>
           </v-flex>
           <v-flex xs12>
-            <v-text-field v-model="hostIp"></v-text-field>
+            <v-text-field label="Server addres" v-model="hostIp"></v-text-field>
           </v-flex>
           <v-flex xs12>
             <v-btn flat @click="connect" block color="success">Connect</v-btn>
@@ -39,7 +39,11 @@
 import axios from "axios";
 export default {
   mounted() {
-    this.connect();
+    let host = this.$store.getters.getHostIp;
+    if (host !== "") {
+      this.hostIp = host;
+      this.connect();
+    }
   },
   methods: {
     buildReqURL(route) {
@@ -98,7 +102,7 @@ export default {
 
   data() {
     return {
-      hostIp: "localhost:5000",
+      hostIp: "",
       errorMessage: "",
       username: "",
       password: ""

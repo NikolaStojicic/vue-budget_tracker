@@ -107,7 +107,7 @@ export default {
   },
   mounted() {
     // check if localstorage persist, if not route to '/'
-    if (!this.isLocalStorage()) {
+    if (!this.isLocalStorage() || localStorage.username !== "") {
       this.$router.push("/login");
       return;
     }
