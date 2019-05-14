@@ -134,7 +134,6 @@ export default {
       this.$store.commit("set_jwt", token);
       axios.defaults.headers.common["Authorization"] = "Bearer " + token;
     },
-
     async updateItems() {
       // refreshes JWT every update
       let jwtResponse = await this.refreshJWT();
