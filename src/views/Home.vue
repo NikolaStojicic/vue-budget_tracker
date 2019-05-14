@@ -108,7 +108,7 @@ export default {
   mounted() {
     // check if localstorage persist, if not route to '/'
     if (!this.isLocalStorage()) {
-      this.$router.push("/login");
+      //this.$router.push("/login");
       return;
     }
     this.updateItems();
