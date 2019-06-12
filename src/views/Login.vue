@@ -24,10 +24,10 @@
             <span class="red--text">{{errorMessage}}</span>
           </v-flex>
           <v-flex xs12>
-            <v-text-field label="Server addres" v-model="hostIp"></v-text-field>
+            <v-text-field  label="Server addres" v-model="hostIp"></v-text-field>
           </v-flex>
           <v-flex xs12>
-            <v-btn flat @click="connect" block color="success">Connect</v-btn>
+            <v-btn flat @click="server" block color="success">Connect</v-btn>
           </v-flex>
         </v-layout>
       </v-container>
@@ -37,11 +37,22 @@
 
 <script>
 import axios from "axios";
+import { setTimeout } from "timers";
 export default {
+  created() {},
   mounted() {
     this.refreshUrl();
+    if (this.$store.getters.getHostIp && this.$store.getters.getHostIp == "")
+      this.refreshUrl();
+    else {
+      this.hostIp = this.$store.getters.getHostIp;
+      this.connect();
+    }
   },
   methods: {
+    server(){
+      this.connect()
+    },
     buildReqURL(route) {
       return `${this.$store.getters.getHostIp}/${route}`;
     },
@@ -51,23 +62,28 @@ export default {
           "https://raw.githubusercontent.com/NikolaStojicic/flask_budget_tracker/master/ngrok_tunnel"
         )
         .then(response => {
-          this.hostIp = url.data.url;
+          this.hostIp = response.data.url;
+          this.$store.commit("set_host_ip", this.hostIp);
           this.connect();
         });
     },
     connect() {
-      this.$store.commit("set_host_ip", this.hostIp);
       let url = this.buildReqURL("ping");
       axios
         .get(url)
         .then(response => {
           this.errorMessage = response.data.msg;
+           this.$store.commit("set_host_ip", this.hostIp);
         })
         .catch(error => {
+          this.refreshUrl();
           if (error.response === undefined) {
             this.errorMessage =
               "Something went wrong! Server probably not present or ip adress inccorect!";
-          } else this.errorMessage = error.response.data.msg;
+              this.hostIp = this.$store.getters.getHostIp;
+          } else {
+            this.errorMessage = error.response.data.msg;
+          }
         });
     },
     register() {

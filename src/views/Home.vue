@@ -128,31 +128,34 @@ export default {
           Authorization: "Bearer " + this.$store.getters.getRefreshJwt
         }
       };
-      axios.get(getUrl, getObj).then(response => {
-        this.setJWTHeader(response.data.access_token);
-
-let url = this.buildReqURL("ticket");
       axios
-        .get(url)
+        .get(getUrl, getObj)
         .then(response => {
-          this.items = response.data.tickets;
+          this.setJWTHeader(response.data.access_token);
+
+          let url = this.buildReqURL("ticket");
+          axios
+            .get(url)
+            .then(response => {
+              this.items = response.data.tickets;
+            })
+            .catch(error => {
+              console.log("greska");
+              console.log(error.response.status);
+            });
         })
-        .catch(error => {
-          console.log('greska')
-           console.log(error.response.status);
+        .catch(err => {
+          this.$router.push("/login");
         });
-      }).catch(err => {
-        this.$router.push('/login');
-      });
     },
     setJWTHeader(token) {
       this.$store.commit("set_jwt", token);
       axios.defaults.headers.common["Authorization"] = "Bearer " + token;
     },
-    
+
     updateItems() {
       // refreshes JWT every update
-      this.refreshJWT()
+      this.refreshJWT();
     },
     logout() {
       this.$store.commit("clear_state");
