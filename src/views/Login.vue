@@ -38,17 +38,22 @@
 <script>
 import axios from "axios";
 export default {
-  async mounted() {
-      let url = await this.refreshUrl()
-      this.hostIp = url.data.url;
-      this.connect();
+  mounted() {
+    this.refreshUrl();
   },
   methods: {
     buildReqURL(route) {
       return `${this.$store.getters.getHostIp}/${route}`;
     },
-    refreshUrl(){
-      return axios.get('https://raw.githubusercontent.com/NikolaStojicic/flask_budget_tracker/master/ngrok_tunnel')
+    refreshUrl() {
+      axios
+        .get(
+          "https://raw.githubusercontent.com/NikolaStojicic/flask_budget_tracker/master/ngrok_tunnel"
+        )
+        .then(response => {
+          this.hostIp = url.data.url;
+          this.connect();
+        });
     },
     connect() {
       this.$store.commit("set_host_ip", this.hostIp);
