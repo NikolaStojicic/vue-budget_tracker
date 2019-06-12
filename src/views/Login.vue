@@ -38,16 +38,20 @@
 <script>
 import axios from "axios";
 export default {
-  mounted() {
+  async mounted() {
     let host = this.$store.getters.getHostIp;
     if (host !== "") {
-      this.hostIp = host;
+      let url = await this.refreshUrl()
+      this.hostIp = url.data.url;
       this.connect();
     }
   },
   methods: {
     buildReqURL(route) {
       return `${this.$store.getters.getHostIp}/${route}`;
+    },
+    refreshUrl(){
+      return axios.get('https://raw.githubusercontent.com/NikolaStojicic/flask_budget_tracker/master/ngrok_tunnel')
     },
     connect() {
       this.$store.commit("set_host_ip", this.hostIp);
