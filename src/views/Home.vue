@@ -130,19 +130,8 @@ export default {
       };
       axios.get(getUrl, getObj).then(response => {
         this.setJWTHeader(response.data.access_token);
-      }).catch(err => {
-        this.$router.push('/login');
-      });
-    },
-    setJWTHeader(token) {
-      this.$store.commit("set_jwt", token);
-      axios.defaults.headers.common["Authorization"] = "Bearer " + token;
-    },
-    
-    async updateItems() {
-      // refreshes JWT every update
-      await this.refreshJWT()
-      let url = this.buildReqURL("ticket");
+
+let url = this.buildReqURL("ticket");
       axios
         .get(url)
         .then(response => {
@@ -152,6 +141,18 @@ export default {
           console.log('greska')
            console.log(error.response.status);
         });
+      }).catch(err => {
+        this.$router.push('/login');
+      });
+    },
+    setJWTHeader(token) {
+      this.$store.commit("set_jwt", token);
+      axios.defaults.headers.common["Authorization"] = "Bearer " + token;
+    },
+    
+    updateItems() {
+      // refreshes JWT every update
+      this.refreshJWT()
     },
     logout() {
       this.$store.commit("clear_state");
