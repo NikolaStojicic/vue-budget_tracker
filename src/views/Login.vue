@@ -39,12 +39,9 @@
 import axios from "axios";
 export default {
   async mounted() {
-    let host = this.$store.getters.getHostIp;
-    if (host !== "") {
       let url = await this.refreshUrl()
       this.hostIp = url.data.url;
       this.connect();
-    }
   },
   methods: {
     buildReqURL(route) {
