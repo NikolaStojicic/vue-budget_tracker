@@ -141,7 +141,7 @@ export default {
     
     async updateItems() {
       // refreshes JWT every update
-      this.refreshJWT()
+      await this.refreshJWT()
       let url = this.buildReqURL("ticket");
       axios
         .get(url)
